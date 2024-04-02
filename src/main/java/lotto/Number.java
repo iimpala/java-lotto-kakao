@@ -2,9 +2,9 @@ package lotto;
 
 import java.util.Objects;
 
-public class Ball {
+public class Number {
     private final int number;
-    public Ball(int number) {
+    public Number(int number) {
         validateBall(number);
         this.number = number;
     }
@@ -25,8 +25,8 @@ public class Ball {
             return true;
         if (other == null || getClass() != other.getClass())
             return false;
-        Ball ball = (Ball)other;
-        return number == ball.number;
+        Number number = (Number)other;
+        return this.number == number.number;
     }
 
     @Override
