@@ -25,4 +25,11 @@ public class BudgetTest {
         Assertions.assertThatThrownBy(() -> new Budget(99999)).isInstanceOf(RuntimeException.class);
     }
 
+    @Test
+    public void 구매_가능한_티켓의_수를_반환한다() {
+        Budget budget = new Budget(15000);
+        int quantity = budget.getTicketQuantity();
+        Assertions.assertThat(quantity).isEqualTo(15);
+    }
+
 }

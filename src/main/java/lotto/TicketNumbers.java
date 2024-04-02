@@ -3,6 +3,7 @@ package lotto;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TicketNumbers extends Numbers {
 
@@ -15,6 +16,10 @@ public class TicketNumbers extends Numbers {
 
     public TicketNumbers(List<Number> numbers) {
         this(new HashSet<>(numbers));
+    }
+
+    public TicketDto toDto() {
+        return new TicketDto(numbers.stream().map(Number::toInteger).collect(Collectors.toSet()));
     }
 
 }

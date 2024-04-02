@@ -19,6 +19,10 @@ public class Number {
         }
     }
 
+    public Integer toInteger() {
+        return number;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other)
@@ -32,5 +36,10 @@ public class Number {
     @Override
     public int hashCode() {
         return Objects.hash(number);
+    }
+
+    @Override
+    public String toString() {
+        return Integer.toString(number);
     }
 }

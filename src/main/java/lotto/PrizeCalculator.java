@@ -12,6 +12,6 @@ public class PrizeCalculator {
 
         int count = result.values().stream().reduce(0, Integer::sum);
 
-        return (double)(total / (count * 1000L));
+        return total / (count * 1000.0d);
     }
 }

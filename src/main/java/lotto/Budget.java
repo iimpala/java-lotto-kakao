@@ -1,7 +1,7 @@
 package lotto;
 
 public class Budget {
-    private int budget;
+    private final int budget;
 
     public Budget(int budget) {
         validateBudget(budget);
@@ -20,5 +20,9 @@ public class Budget {
         if (budget % 1000 != 0) {
             throw new RuntimeException("구매 금액은 1000의 배수여야 합니다.");
         }
+    }
+
+    public int getTicketQuantity() {
+        return budget / 1000;
     }
 }

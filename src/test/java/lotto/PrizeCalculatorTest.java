@@ -12,7 +12,7 @@ public class PrizeCalculatorTest {
     public void 회차_진행_통계_정보를_받아_수익률을_계산한다() throws Exception {
         // given
         Map<Prize, Integer> result = new HashMap<>();
-        result.put(Prize.NOTHING, 10);
+        result.put(Prize.NOTHING, 1);
         result.put(Prize.FIFTH, 1);
         result.put(Prize.FOURTH, 1);
         result.put(Prize.THIRD, 1);
@@ -23,6 +23,6 @@ public class PrizeCalculatorTest {
         double rate = PrizeCalculator.calculate(result);
 
         // then
-        Assertions.assertThat(rate).isEqualTo(135437.0);
+        Assertions.assertThat(rate).isEqualTo(338592.5);
     }
 }
