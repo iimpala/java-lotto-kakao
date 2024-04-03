@@ -19,7 +19,9 @@ public class TicketNumbers extends Numbers {
     }
 
     public TicketDto toDto() {
-        return new TicketDto(numbers.stream().map(Number::toInteger).collect(Collectors.toSet()));
+        return new TicketDto(numbers.stream()
+            .map(Number::toInteger)
+            .collect(Collectors.toList()));
     }
 
 }

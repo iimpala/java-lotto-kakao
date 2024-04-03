@@ -1,15 +1,20 @@
 package lotto.domain;
 
-import java.util.Set;
+import java.util.List;
 
 public class TicketDto {
-    Set<Integer> numbers;
+    List<Integer> numbers;
 
-    public TicketDto(Set<Integer> numbers) {
+    public TicketDto(List<Integer> numbers) {
         this.numbers = numbers;
     }
 
-    public Set<Integer> getNumbers() {
+    public List<Integer> getNumbers() {
         return numbers;
+    }
+
+    @Override
+    public String toString() {
+        return numbers.toString();
     }
 }
