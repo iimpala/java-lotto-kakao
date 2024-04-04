@@ -18,10 +18,5 @@ public class TicketNumbers extends Numbers {
         this(new HashSet<>(numbers));
     }
 
-    public TicketDto toDto() {
-        return new TicketDto(numbers.stream()
-            .map(Number::toInteger)
-            .collect(Collectors.toList()));
-    }
 
 }

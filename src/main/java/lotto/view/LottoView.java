@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import lotto.domain.LottoResultDto;
+import lotto.dto.LottoResultDto;
 import lotto.domain.Prize;
-import lotto.domain.TicketDto;
+import lotto.dto.TicketDto;
 
 public class LottoView {
 

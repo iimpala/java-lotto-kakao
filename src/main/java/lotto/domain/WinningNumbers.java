@@ -18,27 +18,11 @@ public class WinningNumbers extends Numbers {
     }
 
     public Prize checkWinning(TicketNumbers ticketNumbers) {
-        int matchCount = ticketNumbers.compare(this);
+        int matchCount = ticketNumbers.match(this);
         if (matchCount <= 2) {
             return Prize.NOTHING;
         }
-        return getPrize(ticketNumbers, matchCount);
-    }
-
-    private Prize getPrize(TicketNumbers ticketNumbers, int matchCount) {
-        if (matchCount == 3) {
-            return Prize.FIFTH;
-        }
-        if (matchCount == 4) {
-            return Prize.FOURTH;
-        }
-        if (matchCount == 5 && !ticketNumbers.contains(bonusNumber)) {
-            return Prize.THIRD;
-        }
-        if (matchCount == 5 && ticketNumbers.contains(bonusNumber)) {
-            return Prize.SECOND;
-        }
-        return Prize.FIRST;
+        return Prize.of(matchCount, ticketNumbers.contains(bonusNumber));
     }
 
     private void validateWinningNumber(Set<Number> regularNumbers, Number bonusNumber) {

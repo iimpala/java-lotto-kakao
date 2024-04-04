@@ -1,21 +1,32 @@
 package lotto.domain;
 
+import static lotto.domain.LottoConstants.*;
+
+import java.lang.module.ResolutionException;
+import java.util.List;
 import java.util.Objects;
 
 public class Number {
+    private static Number[] numberInstances = new Number[NUMBER_MAX];
     private final int number;
-    public Number(int number) {
-        validateBall(number);
+    private Number(int number) {
         this.number = number;
     }
+    public static Number getNumberInstance(int number) {
+        validateBall(number);
+        if (numberInstances[number - 1] == null) {
+            numberInstances[number - 1] = new Number(number);
+        }
+        return numberInstances[number - 1];
+    }
 
-    private void validateBall(int number) {
-        if (number < 1) {
-            throw new RuntimeException("공은 1이상의 정수여야 합니다.");
+    private static void validateBall(int number) {
+        if (number < NUMBER_MIN) {
+            throw new IllegalArgumentException("공은 "+NUMBER_MIN+"이상의 정수여야 합니다.");
         }
 
-        if (number > 45) {
-            throw new RuntimeException("공은 45이하의 정수여야 합니다.");
+        if (number > NUMBER_MAX) {
+            throw new IllegalArgumentException("공은 "+NUMBER_MAX+"이하의 정수여야 합니다.");
         }
     }
 

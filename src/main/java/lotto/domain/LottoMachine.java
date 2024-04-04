@@ -5,7 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import lotto.dto.LottoResultDto;
 
 public class LottoMachine {
 
@@ -17,7 +18,7 @@ public class LottoMachine {
         this.numberPool = numberPool;
     }
 
-    public List<TicketDto> generateTickets(Budget budget) {
+    public List<TicketNumbers> generateTickets(Budget budget) {
         int ticketQuantity = budget.getTicketQuantity();
 
         for (int i = 0; i < ticketQuantity; i++) {
@@ -25,12 +26,10 @@ public class LottoMachine {
             tickets.add(new TicketNumbers(numberPool.subList(0, 6)));
         }
 
-        return tickets.stream()
-            .map(TicketNumbers::toDto)
-            .collect(Collectors.toList());
+        return tickets;
     }
 
-    public LottoResultDto getResult(WinningNumbers winningNumbers) {
+    public LottoResult getResult(WinningNumbers winningNumbers) {
         Map<Prize, Integer> result = new HashMap<>();
         for (Prize prize : Prize.values()) {
             result.put(prize, 0);
@@ -43,6 +42,6 @@ public class LottoMachine {
 
         double resultRate = PrizeCalculator.calculate(result);
 
-        return new LottoResultDto(result, resultRate);
+        return new LottoResult(result, resultRate);
     }
 }

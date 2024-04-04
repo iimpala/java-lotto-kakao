@@ -35,7 +35,7 @@ public class TicketNumbersTest {
     private static List<Number> parseNumbers(String numbers) {
         List<Number> numberList = Arrays.stream(numbers.split(","))
             .map(Integer::parseInt)
-            .map(Number::new)
+            .map(Number::getNumberInstance)
             .collect(Collectors.toList());
         return numberList;
     }

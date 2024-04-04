@@ -1,6 +1,8 @@
 package lotto.domain;
 
 
+import static lotto.domain.LottoConstants.*;
+
 import java.util.Map;
 
 public class PrizeCalculator {
@@ -12,6 +14,6 @@ public class PrizeCalculator {
 
         int count = result.values().stream().reduce(0, Integer::sum);
 
-        return total / (count * 1000.0d);
+        return total / (count * (double)TICKET_PRICE);
     }
 }

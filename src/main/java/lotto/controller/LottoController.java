@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 
 import lotto.domain.Budget;
 import lotto.domain.LottoMachine;
-import lotto.domain.LottoResultDto;
+import lotto.domain.LottoResult;
+import lotto.dto.LottoResultDto;
 import lotto.domain.Number;
-import lotto.domain.TicketDto;
+import lotto.dto.TicketDto;
+import lotto.domain.TicketNumbers;
 import lotto.domain.WinningNumbers;
 import lotto.view.LottoView;
 
@@ -16,59 +18,63 @@ public class LottoController {
     private final LottoMachine lottoMachine;
     private final LottoView view;
     private List<Number> numberPool;
-    private boolean holdFlag;
 
     public LottoController() {
         initNumberPool();
         this.lottoMachine = new LottoMachine(numberPool);
         this.view = new LottoView();
-        this.holdFlag = true;
     }
 
     public void start() {
-        List<TicketDto> tickets = null;
-        while (holdFlag) {
-            tickets = createTickets();
-        }
-        view.printTickets(tickets);
+        List<TicketNumbers> tickets = createTickets();
+        view.printTickets(tickets.stream()
+            .map(this::ticketNumbersToDto)
+            .collect(Collectors.toList()));
 
-        this.holdFlag = true;
-        LottoResultDto result = null;
-        while (holdFlag) {
-            result = getResult();
-        }
+        LottoResultDto result = lottoResultToDto(getResult());
         view.printLottoResult(result);
     }
 
-    private List<TicketDto> createTickets() {
+    private List<TicketNumbers> createTickets() {
+        List<TicketNumbers> tickets = null;
         try {
             int budget = view.getBudget();
-            List<TicketDto> tickets = lottoMachine.generateTickets(new Budget(budget));
-            this.holdFlag = false;
+            tickets = lottoMachine.generateTickets(new Budget(budget));
             return tickets;
         } catch (RuntimeException e) {
             view.printError(e);
         }
-        return null;
+        return createTickets();
     }
 
-    private LottoResultDto getResult() {
+    private LottoResult getResult() {
         try {
-            List<Number> numbers = view.getNumbers().stream().map(Number::new).collect(Collectors.toList());
-            Number bonusNumber = new Number(view.getBonusNumber());
-            LottoResultDto lottoResultDto = lottoMachine.getResult(new WinningNumbers(numbers, bonusNumber));
-            this.holdFlag = false;
-            return lottoResultDto;
+            List<Number> numbers = view.getNumbers().stream().map(Number::getNumberInstance).collect(Collectors.toList());
+            Number bonusNumber = Number.getNumberInstance(view.getBonusNumber());
+            LottoResult lottoResult = lottoMachine.getResult(new WinningNumbers(numbers, bonusNumber));
+            return lottoResult;
         } catch (RuntimeException e) {
             view.printError(e);
         }
-        return null;
+        return getResult();
     }
 
     private void initNumberPool() {
         this.numberPool = new ArrayList<>();
         for (int i = 1; i <= 45; i++) {
-            numberPool.add(new Number(i));
+            numberPool.add(Number.getNumberInstance(i));
         }
+    }
+    public TicketDto ticketNumbersToDto(TicketNumbers ticketNumbers) {
+        return new TicketDto(
+            ticketNumbers.getNumbers().stream()
+            .map(Number::toInteger)
+            .collect(Collectors.toList()));
+    }
+
+    public LottoResultDto lottoResultToDto(LottoResult lottoResult) {
+        return new LottoResultDto(
+            lottoResult.getLottoResult(), lottoResult.getResultRate()
+        );
     }
 }

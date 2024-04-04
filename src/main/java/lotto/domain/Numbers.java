@@ -10,10 +10,14 @@ public class Numbers {
         this.numbers = numbers;
     }
 
-    protected int compare (Numbers otherNumbers) {
+    protected int match(Numbers otherNumbers) {
         return (int)numbers.stream()
             .filter(otherNumbers::contains)
             .count();
+    }
+
+    public Set<Number> getNumbers() {
+        return numbers;
     }
 
     protected boolean contains(Number number) {

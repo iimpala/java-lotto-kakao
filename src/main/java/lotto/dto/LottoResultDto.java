@@ -1,6 +1,8 @@
-package lotto.domain;
+package lotto.dto;
 
 import java.util.Map;
+
+import lotto.domain.Prize;
 
 public class LottoResultDto {
     private final Map<Prize, Integer> lottoResult;
