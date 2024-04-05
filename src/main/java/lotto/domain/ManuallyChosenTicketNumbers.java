@@ -4,13 +4,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ManuallyChosenNumbers extends Numbers {
+public class ManuallyChosenTicketNumbers extends Numbers {
 
-    public ManuallyChosenNumbers(List<Number> regularNumbers) {
+    public ManuallyChosenTicketNumbers(List<Number> regularNumbers) {
         this(new HashSet<>(regularNumbers));
     }
 
-    public ManuallyChosenNumbers(Set<Number> regularNumbers) {
+    public ManuallyChosenTicketNumbers(Set<Number> regularNumbers) {
         super(regularNumbers);
         validateWinningNumber(regularNumbers);
     }
