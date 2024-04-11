@@ -1,6 +1,9 @@
 package lotto.domain;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class WinningLotto {
 
@@ -21,6 +24,12 @@ public class WinningLotto {
         int matchCount = winningTicket.countMatchedNumbers(ticket);
         boolean isBonusNumberMatched = ticket.contains(bonusNumber);
         return Prize.evaluate(matchCount, isBonusNumberMatched);
+    }
+
+    public Map<Prize, Long> aggregateResult(List<LottoTicket> tickets) {
+        return tickets.stream()
+                .map(this::calculatePrize)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
     private void validateWinningNumber(LottoTicket winningTicket, LottoNumber bonusLottoNumber) {

@@ -1,10 +1,7 @@
 package lotto.domain;
 
 
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class LottoResult {
 
@@ -14,8 +11,8 @@ public class LottoResult {
         this.result = result;
     }
 
-    public LottoResult(WinningLotto winningLotto, List<LottoTicket> tickets) {
-        this(aggregateResult(winningLotto, tickets));
+    public Map<Prize, Long> getResult() {
+        return Map.copyOf(result);
     }
 
     public double getProfitRate(LottoPurchaseBudget budget) {
@@ -24,15 +21,5 @@ public class LottoResult {
                 .sum();
 
         return budget.calculateProfitRate(profit);
-    }
-
-    public Map<Prize, Long> getResult() {
-        return Map.copyOf(result);
-    }
-
-    private static Map<Prize, Long> aggregateResult(WinningLotto winningLotto, List<LottoTicket> tickets) {
-        return tickets.stream()
-                .map(winningLotto::calculatePrize)
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 }
