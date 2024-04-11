@@ -18,7 +18,7 @@ public class WinningLotto {
     }
 
     public Prize calculatePrize(LottoTicket ticket) {
-        int matchCount = winningTicket.compare(ticket);
+        int matchCount = winningTicket.countMatchedNumbers(ticket);
         boolean isBonusNumberMatched = ticket.contains(bonusNumber);
         return Prize.evaluate(matchCount, isBonusNumberMatched);
     }

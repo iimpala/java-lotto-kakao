@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 public class LottoTicket {
 
     private static final int LOTTO_NUMBERS_COUNT = 6;
+
     private final Set<LottoNumber> lottoNumbers;
 
     public LottoTicket(Set<LottoNumber> lottoNumbers) {
@@ -25,10 +26,10 @@ public class LottoTicket {
         return new LottoTicket(ticketNumbers);
     }
 
-    public int compare (LottoTicket otherNumbers) {
+    public int countMatchedNumbers(LottoTicket otherNumbers) {
         return (int) lottoNumbers.stream()
-            .filter(otherNumbers::contains)
-            .count();
+                .filter(otherNumbers::contains)
+                .count();
     }
 
     public boolean contains(LottoNumber lottoNumber) {
