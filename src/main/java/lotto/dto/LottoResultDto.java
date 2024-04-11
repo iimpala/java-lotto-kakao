@@ -1,19 +1,17 @@
 package lotto.dto;
 
-import lotto.domain.Prize;
-
-import java.util.Map;
+import java.util.List;
 
 public class LottoResultDto {
-    private final Map<String, Long> lottoResult;
+    private final List<String> lottoResult;
     private final double resultRate;
 
-    public LottoResultDto(Map<String, Long> lottoResult, double resultRate) {
+    public LottoResultDto(List<String> lottoResult, double resultRate) {
         this.lottoResult = lottoResult;
         this.resultRate = resultRate;
     }
 
-    public Map<String, Long> getLottoResult() {
+    public List<String> getLottoResult() {
         return lottoResult;
     }
 

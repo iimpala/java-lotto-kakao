@@ -67,7 +67,7 @@ public class LottoView {
     public void printLottoResult(LottoResultDto result) {
         System.out.println("당첨 통계");
         System.out.println("---------");
-        result.getLottoResult().forEach((key, value) -> System.out.println(key + " - " + value + "개"));
+        result.getLottoResult().forEach(System.out::println);
         System.out.printf("총 수익률은 %.2f 입니다.", result.getResultRate());
     }
 

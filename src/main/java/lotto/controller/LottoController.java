@@ -8,6 +8,8 @@ import lotto.dto.LottoResultDto;
 import lotto.dto.TicketDto;
 import lotto.view.LottoView;
 
+import static lotto.domain.Prize.SECOND;
+
 public class LottoController {
     private final LottoTicketSeller seller;
     private final LottoView view;
@@ -92,12 +94,22 @@ public class LottoController {
     private LottoResultDto mapToResultDto(LottoResult lottoResult, LottoPurchaseBudget budget) {
         Map<Prize, Long> result = lottoResult.getResult();
 
-        Map<String, Long> totalResult = new LinkedHashMap<>();
-        Arrays.stream(Prize.values())
+        List<String> resultString = Arrays.stream(Prize.values())
                 .filter(prize -> prize != Prize.NOTHING)
-                .sorted((a, b) -> b.getOrder() - a.getOrder())
-                .forEach(prize -> totalResult.put(prize.toString(), result.getOrDefault(prize, 0L)));
+                .sorted(Comparator.comparingInt(Prize::getOrder).reversed())
+                .map(prize -> convertPrizeToString(prize) + " - " + result.getOrDefault(prize, 0L) + "개")
+                .collect(Collectors.toList());
 
-        return new LottoResultDto(totalResult, lottoResult.getProfitRate(budget));
+        return new LottoResultDto(resultString, lottoResult.getProfitRate(budget));
+    }
+
+    private String convertPrizeToString(Prize prize) {
+        StringBuilder sb = new StringBuilder(prize.getMatchCount() + "개 일치");
+        if (prize == SECOND) {
+            sb.append(", 보너스 볼 일치");
+        }
+        sb.append("(").append(prize.getReward()).append("원)");
+
+        return sb.toString();
     }
 }
