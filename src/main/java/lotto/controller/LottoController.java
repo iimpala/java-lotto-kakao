@@ -21,7 +21,7 @@ public class LottoController {
         LottoPurchaseBudget budget = getBudget();
         int manualLottoCount = getManualLottoCount(budget);
 
-        List<LottoTicket> tickets = getManualLottoTickets(manualLottoCount, budget);
+        LottoTickets tickets = getManualLottoTickets(manualLottoCount, budget);
         tickets.addAll(LottoTicketSeller.purchaseAutoLottoTickets(budget));
         view.printTickets(mapToTicketDtos(tickets));
 
@@ -51,7 +51,7 @@ public class LottoController {
         }
     }
 
-    private List<LottoTicket> getManualLottoTickets(int manualLottoCount, LottoPurchaseBudget budget) {
+    private LottoTickets getManualLottoTickets(int manualLottoCount, LottoPurchaseBudget budget) {
         try {
             List<List<Integer>> manualLottoNumbers = view.getManualLottoNumbers(manualLottoCount);
              return LottoTicketSeller.purchaseManualLottoTickets(manualLottoNumbers, budget);
@@ -77,7 +77,7 @@ public class LottoController {
         }
     }
 
-    private List<TicketDto> mapToTicketDtos(List<LottoTicket> tickets) {
+    private List<TicketDto> mapToTicketDtos(LottoTickets tickets) {
         return tickets.stream()
                 .map(LottoTicket::toList)
                 .map(LottoController::mapToTicketDto)
