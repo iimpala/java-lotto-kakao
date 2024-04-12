@@ -23,7 +23,7 @@ public class LottoController {
 
         List<LottoTicket> tickets = getManualLottoTickets(manualLottoCount, budget);
         tickets.addAll(LottoTicketSeller.purchaseAutoLotto(budget));
-        view.printTickets(mapToTicketDto(tickets));
+        view.printTickets(mapToTicketDtos(tickets));
 
         WinningLotto winningLotto = getWinningLotto();
         LottoResult lottoResult = winningLotto.aggregateResult(tickets);
@@ -77,16 +77,17 @@ public class LottoController {
         }
     }
 
-    private List<TicketDto> mapToTicketDto(List<LottoTicket> tickets) {
-        List<TicketDto> ticketDtos = new ArrayList<>();
-        for (LottoTicket ticket : tickets) {
-            List<Integer> numbers = ticket.toList().stream()
-                    .map(LottoNumber::getValue)
-                    .collect(Collectors.toList());
+    private List<TicketDto> mapToTicketDtos(List<LottoTicket> tickets) {
+        return tickets.stream()
+                .map(LottoTicket::toList)
+                .map(LottoController::mapToTicketDto)
+                .collect(Collectors.toList());
+    }
 
-            ticketDtos.add(new TicketDto(numbers));
-        }
-        return ticketDtos;
+    private static TicketDto mapToTicketDto(List<LottoNumber> lottoNumbers) {
+        return lottoNumbers.stream()
+                .map(LottoNumber::getValue)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), TicketDto::new));
     }
 
     private LottoResultDto mapToResultDto(LottoResult lottoResult, LottoPurchaseBudget budget) {
