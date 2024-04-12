@@ -9,7 +9,7 @@ public class LottoTicketSeller {
 
     private static final int TICKET_LOTTO_NUMBER_COUNT = 6;
 
-    public static List<LottoTicket> purchaseAutoLotto(LottoPurchaseBudget budget) {
+    public static List<LottoTicket> purchaseAutoLottoTickets(LottoPurchaseBudget budget) {
         int ticketQuantity = budget.getTicketQuantity();
 
         List<LottoNumber> lottoNumbers = LottoNumber.getValues();
@@ -21,7 +21,7 @@ public class LottoTicketSeller {
                 .collect(Collectors.toList());
     }
 
-    public static List<LottoTicket> purchaseManualLotto(List<List<Integer>> manualLottoNumbers, LottoPurchaseBudget budget) {
+    public static List<LottoTicket> purchaseManualLottoTickets(List<List<Integer>> manualLottoNumbers, LottoPurchaseBudget budget) {
         List<LottoTicket> manualTickets = manualLottoNumbers.stream()
                 .map(LottoTicket::of)
                 .collect(Collectors.toList());
