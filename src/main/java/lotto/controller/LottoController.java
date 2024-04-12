@@ -11,11 +11,9 @@ import lotto.view.LottoView;
 import static lotto.domain.Prize.SECOND;
 
 public class LottoController {
-    private final LottoTicketSeller seller;
     private final LottoView view;
 
     public LottoController() {
-        this.seller = new LottoTicketSeller();
         this.view = new LottoView();
     }
 
@@ -24,7 +22,7 @@ public class LottoController {
         int manualLottoCount = getManualLottoCount(budget);
 
         List<LottoTicket> tickets = getManualLottoTickets(manualLottoCount, budget);
-        tickets.addAll(seller.purchaseAutoLotto(budget));
+        tickets.addAll(LottoTicketSeller.purchaseAutoLotto(budget));
         view.printTickets(mapToTicketDto(tickets));
 
         WinningLotto winningLotto = getWinningLotto();
@@ -57,7 +55,7 @@ public class LottoController {
     private List<LottoTicket> getManualLottoTickets(int manualLottoCount, LottoPurchaseBudget budget) {
         try {
             List<List<Integer>> manualLottoNumbers = view.getManualLottoNumbers(manualLottoCount);
-             return seller.purchaseManualLotto(manualLottoNumbers, budget);
+             return LottoTicketSeller.purchaseManualLotto(manualLottoNumbers, budget);
         } catch (RuntimeException e) {
             view.printError(e);
             return getManualLottoTickets(manualLottoCount, budget);
