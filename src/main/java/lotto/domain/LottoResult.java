@@ -16,8 +16,8 @@ public class LottoResult {
     }
 
     public double getProfitRate(LottoPurchaseBudget budget) {
-        long profit = result.keySet().stream()
-                .mapToLong(prize -> prize.totalReward(result.get(prize)))
+        long profit = result.entrySet().stream()
+                .mapToLong(entry -> entry.getKey().totalReward(entry.getValue()))
                 .sum();
 
         return budget.calculateProfitRate(profit);
