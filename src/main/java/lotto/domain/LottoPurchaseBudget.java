@@ -29,7 +29,7 @@ public class LottoPurchaseBudget {
             throw new IllegalArgumentException("구입 개수는 양의 정수여야 합니다.");
         }
 
-        if (lottoCount > getTicketQuantity()) {
+        if (lottoCount * TICKET_PRICE > budget) {
             throw new IllegalStateException("구매 금액을 초과하여 로또를 구매할 수 없습니다.");
         }
     }
