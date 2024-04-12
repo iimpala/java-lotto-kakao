@@ -26,8 +26,7 @@ public class LottoController {
         view.printTickets(mapToTicketDto(tickets));
 
         WinningLotto winningLotto = getWinningLotto();
-        Map<Prize, Long> result = winningLotto.aggregateResult(tickets);
-        LottoResult lottoResult = new LottoResult(result);
+        LottoResult lottoResult = winningLotto.aggregateResult(tickets);
 
         view.printLottoResult(mapToResultDto(lottoResult, budget));
     }

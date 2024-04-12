@@ -26,10 +26,11 @@ public class WinningLotto {
         return Prize.evaluate(matchCount, isBonusNumberMatched);
     }
 
-    public Map<Prize, Long> aggregateResult(List<LottoTicket> tickets) {
-        return tickets.stream()
+    public LottoResult aggregateResult(List<LottoTicket> tickets) {
+        Map<Prize, Long> result = tickets.stream()
                 .map(this::calculatePrize)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        return new LottoResult(result);
     }
 
     private void validateWinningNumber(LottoTicket winningTicket, LottoNumber bonusLottoNumber) {
