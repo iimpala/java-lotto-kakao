@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -11,8 +12,10 @@ public class LottoTickets {
         this.tickets = tickets;
     }
 
-    public void addAll(LottoTickets otherTickets) {
-        this.tickets.addAll(otherTickets.tickets);
+    public LottoTickets addAll(LottoTickets otherTickets) {
+        List<LottoTicket> totalTickets = new ArrayList<>(tickets);
+        totalTickets.addAll(otherTickets.tickets);
+        return new LottoTickets(totalTickets);
     }
 
     public Stream<LottoTicket> stream() {

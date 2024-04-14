@@ -21,12 +21,13 @@ public class LottoController {
         LottoPurchaseBudget budget = getBudget();
         int manualLottoCount = getManualLottoCount(budget);
 
-        LottoTickets tickets = getManualLottoTickets(manualLottoCount, budget);
-        tickets.addAll(LottoTicketSeller.purchaseAutoLottoTickets(budget));
-        view.printTickets(mapToTicketDtos(tickets));
+        LottoTickets manualTickets = getManualLottoTickets(manualLottoCount, budget);
+        LottoTickets autoTickets = LottoTicketSeller.purchaseAutoLottoTickets(budget);
+        LottoTickets totalTickets = manualTickets.addAll(autoTickets);
+        view.printTickets(mapToTicketDtos(totalTickets));
 
         WinningLotto winningLotto = getWinningLotto();
-        LottoResult lottoResult = winningLotto.aggregateResult(tickets);
+        LottoResult lottoResult = winningLotto.aggregateResult(totalTickets);
 
         view.printLottoResult(mapToResultDto(lottoResult, budget));
     }
