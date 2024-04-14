@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import lotto.domain.*;
 import lotto.dto.LottoResultDto;
+import lotto.dto.PrizeResultDto;
 import lotto.dto.TicketDto;
 import lotto.view.LottoView;
 
@@ -55,7 +56,7 @@ public class LottoController {
     private LottoTickets getManualLottoTickets(int manualLottoCount, LottoPurchaseBudget budget) {
         try {
             List<List<Integer>> manualLottoNumbers = view.getManualLottoNumbers(manualLottoCount);
-             return LottoTicketSeller.purchaseManualLottoTickets(manualLottoNumbers, budget);
+            return LottoTicketSeller.purchaseManualLottoTickets(manualLottoNumbers, budget);
         } catch (RuntimeException e) {
             view.printError(e);
             return getManualLottoTickets(manualLottoCount, budget);
@@ -94,22 +95,20 @@ public class LottoController {
     private LottoResultDto mapToResultDto(LottoResult lottoResult, LottoPurchaseBudget budget) {
         Map<Prize, Long> result = lottoResult.getResult();
 
-        List<String> resultString = Arrays.stream(Prize.values())
+        List<PrizeResultDto> resultDtos = Arrays.stream(Prize.values())
                 .filter(prize -> prize != Prize.NOTHING)
                 .sorted(Comparator.comparingInt(Prize::getOrder).reversed())
-                .map(prize -> convertPrizeToString(prize) + " - " + result.getOrDefault(prize, 0L) + "개")
+                .map(prize -> mapToPrizeResultDto(prize, result))
                 .collect(Collectors.toList());
 
-        return new LottoResultDto(resultString, lottoResult.getProfitRate(budget));
+        return new LottoResultDto(resultDtos, lottoResult.getProfitRate(budget));
     }
 
-    private String convertPrizeToString(Prize prize) {
-        StringBuilder sb = new StringBuilder(prize.getMatchCount() + "개 일치");
-        if (prize == SECOND) {
-            sb.append(", 보너스 볼 일치");
-        }
-        sb.append("(").append(prize.getReward()).append("원)");
-
-        return sb.toString();
+    private static PrizeResultDto mapToPrizeResultDto(Prize prize, Map<Prize, Long> result) {
+        return new PrizeResultDto(
+                prize.getMatchCount(),
+                prize.equals(SECOND),
+                prize.getReward(),
+                result.getOrDefault(prize, 0L));
     }
 }

@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import lotto.dto.LottoResultDto;
+import lotto.dto.PrizeResultDto;
 import lotto.dto.TicketDto;
 
 public class LottoView {
@@ -44,8 +45,8 @@ public class LottoView {
         System.out.println("지난 주 당첨 번호를 입력해 주세요.");
         String input = scanner.nextLine();
         return Arrays.stream(input.split(","))
-            .map(this::parseInteger)
-            .collect(Collectors.toList());
+                .map(this::parseInteger)
+                .collect(Collectors.toList());
     }
 
     public int getBonusNumber() {
@@ -58,8 +59,8 @@ public class LottoView {
         System.out.printf("%d개 구매했습니다.\n", tickets.size());
         tickets.forEach(ticketDto -> {
             List<Integer> sortedTickets = ticketDto.getNumbers().stream()
-                .sorted()
-                .collect(Collectors.toList());
+                    .sorted()
+                    .collect(Collectors.toList());
             System.out.println(sortedTickets);
         });
     }
@@ -67,12 +68,22 @@ public class LottoView {
     public void printLottoResult(LottoResultDto result) {
         System.out.println("당첨 통계");
         System.out.println("---------");
-        result.getLottoResult().forEach(System.out::println);
+        result.getLottoResult().forEach(this::printPrizeResult);
         System.out.printf("총 수익률은 %.2f 입니다.", result.getResultRate());
     }
 
+    private void printPrizeResult(PrizeResultDto prizeResult) {
+        StringBuilder sb = new StringBuilder(prizeResult.getMatchedCount() + "개 일치");
+        if (prizeResult.isBonusNumberMatched()) {
+            sb.append(", 보너스 볼 일치");
+        }
+        sb.append("(").append(prizeResult.getReward()).append("원)- ")
+                .append(prizeResult.getWinningCount()).append("개");
+        System.out.println(sb);
+    }
+
     public void printError(Exception exception) {
-        System.out.println("[Error] "+ exception.getMessage());
+        System.out.println("[Error] " + exception.getMessage());
     }
 
     private int parseInteger(String input) {
